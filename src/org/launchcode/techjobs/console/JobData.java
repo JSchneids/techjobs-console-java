@@ -12,14 +12,38 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by LaunchCode test
+ * Created by LaunchCode
  */
+
+//add to job data class for assignment
+    //no duplicate jobs
+    //have to call findByValue
 public class JobData {
 
     private static final String DATA_FILE = "resources/job_data.csv";
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+
+    public static ArrayList<HashMap<String, String>> findByValue(String searchTerm) {
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobsBySearch = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            String searchValue = searchTerm;
+
+            String rowValues = row.toString();
+
+            if (rowValues.matches("(?i:.*" + searchValue +".*)")) {
+                jobsBySearch.add(row);
+            }
+
+
+        }
+
+        return jobsBySearch;
+    }
 
     /**
      * Fetch list of all values from loaded data,
@@ -76,16 +100,18 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.matches("(?i:.*" + value +".*)")) {
                 jobs.add(row);
             }
+
+
         }
 
         return jobs;
     }
 
     /**
-     * Read in data from a CSV file and store it in a list
+     * Read in data from a CSV file and store it in a list. Do not need to fully understand
      */
     private static void loadData() {
 
